@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Icons Section</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../3.3/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Lorem ipsum dolor sit amet</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </header>
+        
+        <div class="content-section">
+            <div class="interactive-icons">
+                <div class="icon-item" data-target="content1">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-home default-icon"></i>
+                        <i class="fas fa-house-user hover-icon"></i>
+                    </div>
+                    <span>Home</span>
+                </div>
+                
+                <div class="icon-item" data-target="content2">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-cog default-icon"></i>
+                        <i class="fas fa-tools hover-icon"></i>
+                    </div>
+                    <span>Services</span>
+                </div>
+                
+                <div class="icon-item" data-target="content3">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-info-circle default-icon"></i>
+                        <i class="fas fa-question-circle hover-icon"></i>
+                    </div>
+                    <span>About</span>
+                </div>
+                
+                <div class="icon-item" data-target="content4">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-envelope default-icon"></i>
+                        <i class="fas fa-paper-plane hover-icon"></i>
+                    </div>
+                    <span>Contact</span>
+                </div>
+            </div>
+            
+            <div class="content-display">
+                <div id="content1" class="content-item active">
+                    <h2>Home Content</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula.</p>
+                </div>
+                
+                <div id="content2" class="content-item">
+                    <h2>Services Content</h2>
+                    <p>Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor. Ut enim nulla, suscipit sit amet tempor id, fermentum vitae magna.</p>
+                </div>
+                
+                <div id="content3" class="content-item">
+                    <h2>About Content</h2>
+                    <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin pharetra nonummy pede.</p>
+                </div>
+                
+                <div id="content4" class="content-item">
+                    <h2>Contact Content</h2>
+                    <p>Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const iconItems = document.querySelectorAll('.icon-item');
+            const contentItems = document.querySelectorAll('.content-item');
+            
+            iconItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const target = this.getAttribute('data-target');
+                    
+                    // Remove active class from all items
+                    iconItems.forEach(i => i.classList.remove('active'));
+                    contentItems.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked item and corresponding content
+                    this.classList.add('active');
+                    document.getElementById(target).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #130E27;
+    color: #FFFFFF;
+    line-height: 1.6;
+    padding: 40px 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #161616;
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Header Styles */
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.header h1 {
+    font-size: 36px;
+    color: #DD2211;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.header-content p {
+    font-size: 18px;
+    color: #FFFFFF;
+    margin-bottom: 10px;
+    line-height: 1.8;
+}
+
+.highlight {
+    margin-top: 30px;
+    padding: 15px;
+    background-color: #C62314;
+    display: inline-block;
+    border-radius: 5px;
+}
+
+.highlight strong {
+    font-size: 20px;
+    color: #FFFFFF;
+    text-transform: uppercase;
+}
+
+/* Divider */
+.divider {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #DD2211, transparent);
+    margin: 40px 0;
+    width: 100%;
+}
+
+/* Services Section */
+.services {
+    margin-bottom: 40px;
+}
+
+.services h2 {
+    font-size: 28px;
+    color: #DD2211;
+    margin-bottom: 25px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.services-list {
+    list-style: none;
+    margin-bottom: 25px;
+}
+
+.services-list li {
+    padding: 12px 0;
+    border-bottom: 1px solid #333;
+    font-size: 18px;
+    color: #FFFFFF;
+    position: relative;
+    padding-left: 30px;
+}
+
+.services-list li:before {
+    content: "•";
+    color: #C62314;
+    font-size: 24px;
+    position: absolute;
+    left: 0;
+    top: 8px;
+}
+
+.services-description {
+    font-size: 16px;
+    color: #CCCCCC;
+    line-height: 1.8;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Pricing Section */
+.pricing {
+    margin-bottom: 50px;
+}
+
+.pricing h3 {
+    font-size: 24px;
+    color: #DD2211;
+    margin-bottom: 30px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.pricing-table {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.pricing-column {
+    background: #1E1E1E;
+    border-radius: 10px;
+    padding: 30px 25px;
+    text-align: center;
+    border: 2px solid #333;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.pricing-column:hover {
+    transform: translateY(-5px);
+    border-color: #C62314;
+}
+
+.pricing-column h4 {
+    font-size: 22px;
+    color: #FFFFFF;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.price {
+    font-size: 32px;
+    color: #DD2211;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.features {
+    list-style: none;
+    margin-bottom: 30px;
+}
+
+.features li {
+    padding: 10px 0;
+    color: #CCCCCC;
+    border-bottom: 1px solid #333;
+}
+
+.features li.disabled {
+    color: #666;
+}
+
+.pricing-btn {
+    background: #C62314;
+    color: #FFFFFF;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: 100%;
+}
+
+.pricing-btn:hover {
+    background: #DD2211;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid #333;
+    margin-top: 40px;
+}
+
+.footer p {
+    color: #999;
+    font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+    .pricing-table {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .pricing-column:last-child {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 25px;
+    }
+    
+    .pricing-table {
+        grid-template-columns: 1fr;
+    }
+    
+    .pricing-column:last-child {
+        grid-column: span 1;
+    }
+    
+    .header h1 {
+        font-size: 28px;
+    }
+    
+    .services h2 {
+        font-size: 24px;
+    }
+    
+    .pricing h3 {
+        font-size: 20px;
+    }
+}
