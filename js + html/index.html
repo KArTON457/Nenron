@@ -42,20 +42,36 @@
     </div>
 
     <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                window.alert('🐾 Welcome! Choose your favorite animal friend! 🐾');
+            }, 1000);
+        });
+
         document.querySelectorAll('.animal-btn').forEach(button => {
             button.addEventListener('click', function() {
                 const animal = this.getAttribute('data-animal');
-                document.getElementById('mainImage').src = `img/${animal}.png`;
+                const animalNames = {
+                    'cat': '🐱 Cat',
+                    'dog': '🐶 Dog', 
+                    'duck': '🦆 Duck'
+                };
                 
-                // Add animation class
+                window.alert(`You selected: ${animalNames[animal]}! Great choice! 🎉`);
+                
+                document.getElementById('mainImage').src = `img/${animal}.png`;
+
                 const imageContainer = document.querySelector('.image-container');
                 imageContainer.classList.add('image-changing');
                 
-                // Remove animation class after animation completes
                 setTimeout(() => {
                     imageContainer.classList.remove('image-changing');
                 }, 500);
             });
+        });
+
+        window.addEventListener('beforeunload', function(e) {
+            window.alert('Thanks for visiting! Come back soon to see the animals! 🐾');
         });
     </script>
 </body>
