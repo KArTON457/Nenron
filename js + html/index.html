@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Your Favorite Animal</title>
+    <link rel="stylesheet" href="../js + html/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Which animal do you prefer?</h1>
+            <p>Select your favorite companion below</p>
+        </header>
+        
+        <main>
+            <div class="animal-display">
+                <div class="image-container">
+                    <img id="mainImage" src="img/duck.png" alt="Animal image">
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button class="animal-btn cat" data-animal="cat">
+                    <span class="btn-icon">🐱</span>
+                    Cat
+                </button>
+                <button class="animal-btn dog" data-animal="dog">
+                    <span class="btn-icon">🐶</span>
+                    Dog
+                </button>
+                <button class="animal-btn duck" data-animal="duck">
+                    <span class="btn-icon">🦆</span>
+                    Duck
+                </button>
+            </div>
+        </main>
+        
+        <footer>
+            <p>Made with ❤️ for animal lovers</p>
+        </footer>
+    </div>
+
+    <script>
+        document.querySelectorAll('.animal-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const animal = this.getAttribute('data-animal');
+                document.getElementById('mainImage').src = `img/${animal}.png`;
+                
+                // Add animation class
+                const imageContainer = document.querySelector('.image-container');
+                imageContainer.classList.add('image-changing');
+                
+                // Remove animation class after animation completes
+                setTimeout(() => {
+                    imageContainer.classList.remove('image-changing');
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>
