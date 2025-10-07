@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rechumoe - Видео с Twitch</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #0f0f23;
+            color: #efeff1;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #9146ff 0%, #6441a5 100%);
+            border-radius: 12px;
+        }
+
+        .channel-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .channel-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff6b6b, #9146ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .channel-name {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .channel-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            color: #adadb8;
+            font-size: 16px;
+        }
+
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .video-card {
+            background: #18181b;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border: 1px solid #2d2d2d;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border-color: #9146ff;
+        }
+
+        .video-thumbnail {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            background-color: #2d2d2d;
+            overflow: hidden;
+        }
+
+        .video-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-duration {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .video-views {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .video-info {
+            padding: 15px;
+        }
+
+        .video-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.3;
+        }
+
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #adadb8;
+            font-size: 13px;
+        }
+
+        .video-game {
+            background: #9146ff;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            margin-top: 8px;
+            display: inline-block;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+            color: #adadb8;
+        }
+
+        .error {
+            text-align: center;
+            padding: 40px;
+            color: #ff6b6b;
+            font-size: 16px;
+        }
+
+        .refresh-btn {
+            background: #9146ff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+            transition: background 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            background: #7d3ae6;
+        }
+
+        @media (max-width: 768px) {
+            .videos-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+            
+            .channel-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .channel-name {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="channel-info">
+                <div class="channel-avatar">R</div>
+                <div>
+                    <h1 class="channel-name">Rechumoe</h1>
+                    <div class="channel-stats">
+                        <span>🎮 Variety Streamer</span>
+                        <span>📺 Твич канал</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <button class="refresh-btn" onclick="loadVideos()">🔄 Обновить видео</button>
+
+        <div id="videosContainer" class="videos-grid">
+            <div class="loading">Загружаем видео...</div>
+        </div>
+    </div>
+
+    <script>
+        // Функция для загрузки видео с канала
+        async function loadVideos() {
+            const container = document.getElementById('videosContainer');
+            container.innerHTML = '<div class="loading">Загружаем видео...</div>';
+
+            try {
+                // Получаем данные через Twitch Helix API
+                const videos = await fetchTwitchVideos();
+                
+                if (videos.length === 0) {
+                    container.innerHTML = `
+                        <div class="error">
+                            Не удалось загрузить видео с канала Rechumoe.<br>
+                            Попробуйте обновить страницу позже.
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Отображаем видео
+                container.innerHTML = videos.map(video => `
+                    <div class="video-card" onclick="openTwitchVideo('${video.id}')">
+                        <div class="video-thumbnail">
+                            <img src="${video.thumbnail_url.replace('%{width}', '320').replace('%{height}', '180')}" 
+                                 alt="${video.title}" 
+                                 onerror="this.style.display='none'">
+                            <div class="video-duration">${formatDuration(video.duration)}</div>
+                            <div class="video-views">👁 ${formatViews(video.view_count)}</div>
+                        </div>
+                        <div class="video-info">
+                            <div class="video-title">${video.title}</div>
+                            <div class="video-meta">
+                                <span>${formatDate(video.published_at)}</span>
+                                <span>${video.type === 'archive' ? '📹 Запись' : '🎥 Клип'}</span>
+                            </div>
+                            ${video.game_name ? `<div class="video-game">${video.game_name}</div>` : ''}
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                console.error('Error loading videos:', error);
+                container.innerHTML = `
+                    <div class="error">
+                        Ошибка загрузки: ${error.message}<br>
+                        Проверьте подключение к интернету и попробуйте снова.
+                    </div>
+                `;
+            }
+        }
+
+        // Функция для получения видео с Twitch API
+        async function fetchTwitchVideos() {
+            // В реальном приложении здесь должен быть ваш серверный endpoint
+            // или Twitch Client ID для прямого обращения к API
+            
+            // Демо-данные (в реальном приложении замените на реальный API вызов)
+            return getDemoVideos();
+        }
+
+        // Демо-данные видео (замените на реальный API вызов)
+        function getDemoVideos() {
+            // В реальном приложении используйте:
+            // https://dev.twitch.tv/docs/api/reference#get-videos
+            // Нужен Client ID и авторизация
+            
+            return [
+                {
+                    id: "123456789",
+                    title: "Играем в новую игру! Очень интересный геймплей и смешные моменты",
+                    thumbnail_url: "https://static-cdn.jtvnw.net/cf_vods/d2n2g0k9l6k3c5/123456789//320x180.jpg",
+                    duration: "2h35m42s",
+                    view_count: 15420,
+                    published_at: "2024-01-15T18:30:00Z",
+                    type: "archive",
+                    game_name: "Just Chatting"
+                },
+                {
+                    id: "123456790",
+                    title: "Стрим с подписчиками - общаемся и играем вместе",
+                    thumbnail_url: "https://static-cdn.jtvnw.net/cf_vods/d2n2g0k9l6k3c5/123456790//320x180.jpg",
+                    duration: "3h12m15s",
+                    view_count: 8920,
+                    published_at: "2024-01-14T16:45:00Z",
+                    type: "archive",
+                    game_name: "VALORANT"
+                },
+                {
+                    id: "123456791",
+                    title: "Разговор по душам | Отвечаю на вопросы | Q&A сессия",
+                    thumbnail_url: "https://static-cdn.jtvnw.net/cf_vods/d2n2g0k9l6k3c5/123456791//320x180.jpg",
+                    duration: "1h45m30s",
+                    view_count: 12450,
+                    published_at: "2024-01-13T20:15:00Z",
+                    type: "archive",
+                    game_name: "Just Chatting"
+                },
+                {
+                    id: "123456792",
+                    title: "Новый сезон - новые достижения! Играем до утра",
+                    thumbnail_url: "https://static-cdn.jtvnw.net/cf_vods/d2n2g0k9l6k3c5/123456792//320x180.jpg",
+                    duration: "4h22m10s",
+                    view_count: 18760,
+                    published_at: "2024-01-12T22:00:00Z",
+                    type: "archive",
+                    game_name: "League of Legends"
+                },
+                {
+                    id: "123456793",
+                    title: "Специальный гость на стриме! Невероятные моменты",
+                    thumbnail_url: "https://static-cdn.jtvnw.net/cf_vods/d2n2g0k9l6k3c5/123456793//320x180.jpg",
+                    duration: "2h58m33s",
+                    view_count: 23100,
+                    published_at: "2024-01-11T19:30:00Z",
+                    type: "archive",
+                    game_name: "Variety"
+                },
+                {
+                    id: "123456794",
+                    title: "Учимся играть вместе - обучающий стрим для новичков",
+                    thumbnail_url: "https://static-cdn.jtvnw.net/cf_vods/d2n2g0k9l6k3c5/123456794//320x180.jpg",
+                    duration: "2h15m47s",
+                    view_count: 7650,
+                    published_at: "2024-01-10T17:00:00Z",
+                    type: "archive",
+                    game_name: "Minecraft"
+                }
+            ];
+        }
+
+        // Функция для открытия видео на Twitch
+        function openTwitchVideo(videoId) {
+            window.open(`https://www.twitch.tv/videos/${videoId}`, '_blank');
+        }
+
+        // Вспомогательные функции для форматирования
+        function formatDuration(duration) {
+            // Преобразует формат "1h23m45s" в более читаемый
+            return duration.replace(/[hms]/g, match => {
+                if (match === 'h') return 'ч';
+                if (match === 'm') return 'м';
+                if (match === 's') return 'с';
+                return match;
+            });
+        }
+
+        function formatViews(views) {
+            if (views >= 1000000) {
+                return (views / 1000000).toFixed(1) + 'M';
+            }
+            if (views >= 1000) {
+                return (views / 1000).toFixed(1) + 'k';
+            }
+            return views.toString();
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffTime = Math.abs(now - date);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 1) return 'Вчера';
+            if (diffDays < 7) return `${diffDays} дней назад`;
+            if (diffDays < 30) return `${Math.floor(diffDays / 7)} нед. назад`;
+            return `${Math.floor(diffDays / 30)} мес. назад`;
+        }
+
+        // Загружаем видео при загрузке страницы
+        document.addEventListener('DOMContentLoaded', loadVideos);
+    </script>
+</body>
+</html>
