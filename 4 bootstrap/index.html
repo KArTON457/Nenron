@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bootstrap 5 Конспект</title>
+    <title>Bootstrap</title>
     <!-- Подключение Bootstrap CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -27,7 +27,7 @@
 <body>
     <div class="container">
         <header class="text-center mb-5">
-            <h1 class="display-4">Bootstrap 5 Конспект</h1>
+            <h1 class="display-4">Bootstrap</h1>
             <p class="lead">Примеры всех основных компонентов Bootstrap</p>
         </header>
 
@@ -352,6 +352,98 @@
                 </ul>
             </nav>
         </section>
+        <!-- Простой select -->
+<div class="mb-3">
+    <label for="basicSelect" class="form-label">Простой выбор</label>
+    <select class="form-select" id="basicSelect">
+      <option selected>Выберите вариант...</option>
+      <option value="1">Первый вариант</option>
+      <option value="2">Второй вариант</option>
+      <option value="3">Третий вариант</option>
+    </select>
+  </div>
+  
+  <!-- Select с размерами -->
+  <div class="mb-3">
+    <label for="smallSelect" class="form-label">Маленький select</label>
+    <select class="form-select form-select-sm" id="smallSelect">
+      <option selected>Маленький вариант...</option>
+      <option value="1">Первый</option>
+      <option value="2">Второй</option>
+    </select>
+  </div>
+  
+  <div class="mb-3">
+    <label for="largeSelect" class="form-label">Большой select</label>
+    <select class="form-select form-select-lg" id="largeSelect">
+      <option selected>Большой вариант...</option>
+      <option value="1">Первый</option>
+      <option value="2">Второй</option>
+    </select>
+  </div>
+  
+  <!-- Multiple select -->
+  <div class="mb-3">
+    <label for="multipleSelect" class="form-label">Множественный выбор</label>
+    <select class="form-select" id="multipleSelect" multiple>
+      <option selected>Вариант 1</option>
+      <option>Вариант 2</option>
+      <option>Вариант 3</option>
+      <option>Вариант 4</option>
+      <option>Вариант 5</option>
+    </select>
+    <div class="form-text">Зажмите Ctrl для выбора нескольких вариантов</div>
+  </div>
+  
+  <!-- Disabled select -->
+  <div class="mb-3">
+    <label for="disabledSelect" class="form-label">Отключенный select</label>
+    <select class="form-select" id="disabledSelect" disabled>
+      <option>Недоступный выбор</option>
+    </select>
+  </div>
+  
+  <!-- Select с группами -->
+  <div class="mb-3">
+    <label for="groupSelect" class="form-label">Select с группами</label>
+    <select class="form-select" id="groupSelect">
+      <option selected>Выберите город...</option>
+      <optgroup label="Россия">
+        <option value="moscow">Москва</option>
+        <option value="spb">Санкт-Петербург</option>
+        <option value="kazan">Казань</option>
+      </optgroup>
+      <optgroup label="Беларусь">
+        <option value="minsk">Минск</option>
+        <option value="gomel">Гомель</option>
+      </optgroup>
+      <optgroup label="Казахстан">
+        <option value="almaty">Алматы</option>
+        <option value="nursultan">Нур-Султан</option>
+      </optgroup>
+    </select>
+  </div>
+  
+  <!-- Select с валидацией -->
+  <div class="mb-3">
+    <label for="validSelect" class="form-label">Валидный select</label>
+    <select class="form-select is-valid" id="validSelect">
+      <option selected>Корректный выбор</option>
+      <option>Вариант 1</option>
+      <option>Вариант 2</option>
+    </select>
+    <div class="valid-feedback">Выглядит хорошо!</div>
+  </div>
+  
+  <div class="mb-3">
+    <label for="invalidSelect" class="form-label">Невалидный select</label>
+    <select class="form-select is-invalid" id="invalidSelect">
+      <option selected>Некорректный выбор</option>
+      <option>Вариант 1</option>
+      <option>Вариант 2</option>
+    </select>
+    <div class="invalid-feedback">Пожалуйста, выберите корректный вариант</div>
+  </div>
     </div>
 
     <!-- Подключение Bootstrap JS (необходим для некоторых компонентов) -->
