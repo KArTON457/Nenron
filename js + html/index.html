@@ -57,6 +57,7 @@
                     'duck': '🦆 Duck'
                 };
                 
+
                 window.alert(`You selected: ${animalNames[animal]}! Great choice! 🎉`);
                 
                 document.getElementById('mainImage').src = `img/${animal}.png`;
@@ -64,6 +65,13 @@
                 const imageContainer = document.querySelector('.image-container');
                 imageContainer.classList.add('image-changing');
                 
+
+                
+                const imageContainer = document.querySelector('.image-container');
+                imageContainer.classList.add('image-changing');
+                
+                
+
                 setTimeout(() => {
                     imageContainer.classList.remove('image-changing');
                 }, 500);
