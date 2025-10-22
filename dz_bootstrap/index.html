@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Калькулятор рецептов x2</title>
+  <link rel="icon" type="image/png" href="img/favicon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="img/favicon/favicon.svg" />
+  <link rel="shortcut icon" href="img/favicon/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="img/favicon/apple-touch-icon.png" />
+  <link rel="manifest" href="img/favicon/site.webmanifest" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    body {
+      transition: background-color 0.3s, color 0.3s;
+      padding-bottom: 2rem;
+    }
+    .dark-mode {
+      background-color: #121212;
+      color: #f8f9fa;
+    }
+    .dark-mode .card {
+      background-color: #1e1e1e;
+      color: #f8f9fa;
+    }
+    .dark-mode .accordion-button {
+      background-color: #1e1e1e;
+      color: #f8f9fa;
+    }
+    .dark-mode .accordion-body {
+      background-color: #2d2d2d;
+      color: #f8f9fa;
+    }
+    .dark-mode .form-control, .dark-mode .form-select {
+      background-color: #2d2d2d;
+      color: #f8f9fa;
+      border-color: #444;
+    }
+    .recipe-title {
+      cursor: pointer;
+      border-bottom: 1px dashed #ccc;
+      padding-bottom: 5px;
+    }
+    .dark-mode .recipe-title {
+      border-bottom-color: #555;
+    }
+    .ingredient-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .dark-mode .ingredient-item {
+      border-bottom-color: #444;
+    }
+    .delete-btn {
+      color: #dc3545;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    .delete-btn:hover {
+      color: #bd2130;
+    }
+    .settings-section {
+      margin: 20px 0;
+      padding: 15px;
+      border: 1px solid #dee2e6;
+      border-radius: 0.375rem;
+    }
+    .dark-mode .settings-section {
+      border-color: #444;
+    }
+    .action-buttons {
+      margin-top: 20px;
+    }
+    #recipe_name {
+      min-height: 40px;
+    }
+    .fs-small {
+      font-size: 0.875rem;
+    }
+    .fs-large {
+      font-size: 1.25rem;
+    }
+  </style>
+</head>
+<body class="fs-normal">
+  <div class="container mt-4">
+    <!-- Заголовок и краткое описание -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h2 class="card-title">Увеличить или уменьшить ингредиенты в рецепте</h2>
+        <p class="card-text">Онлайн калькулятор поможет увеличить или уменьшить количество ингредиентов в рецепте.</p>
+      </div>
+    </div>
+
+    <!-- Инструкция -->
+    <div class="accordion mb-4" id="accordionExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Инструкция #1
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Заполните название, количество и единицу измерения для ингредиента, нажмите кнопку "Добавить". Если количество не заполнять или установить равным нулю, то получится значение - по вкусу.  
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            Инструкция #2
+          </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Если нужно удалить ингредиент, то нажмите на значок удаления ингредиента, который добавили ранее.  
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            Инструкция #3
+          </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Выберите уменьшить или увеличить количество ингредиентов и введите во сколько раз. Нажмите кнопку "Вычислить", чтобы получить новый рецепт.  
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+            Инструкция #4
+          </button>
+        </h2>
+        <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Введите название рецепта нажав на заголовок с соответствующим текстом.   
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+            Инструкция #5
+          </button>
+        </h2>
+        <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Можно сделать скриншот готового результата или скопировать в буфер обмена.   
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Настройки приложения -->
+    <div class="settings-section">
+      <h3 class="h3 mb-3">Настройки</h3>
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-primary" type="button" id="decrease_fs_btn">
+          <i class="bi bi-dash-lg"></i> Размер текста
+        </button>
+        <button class="btn btn-outline-primary" type="button" id="increase_fs_btn">
+          <i class="bi bi-plus-lg"></i> Размер текста
+        </button>
+        <button class="btn btn-outline-secondary" type="button" id="change_theme_btn">
+          <i class="bi bi-moon-stars"></i> Тема
+        </button>
+      </div>
+    </div>
+
+    <!-- Добавить ингредиенты -->
+    <div class="settings-section">
+      <h3 class="h3 mb-3">Ингредиенты</h3>
+      <div class="row g-2 mb-3">
+        <div class="col-md-4">
+          <input id="item_name" type="text" class="form-control" placeholder="Название">
+        </div>
+        <div class="col-md-3">
+          <input id="item_count" type="number" class="form-control" placeholder="Кол-во">
+        </div>
+        <div class="col-md-3">
+          <select id="item_unit" class="form-select">
+            <option value="г.">г.</option>
+            <option value="кг.">кг.</option>
+            <option value="мл.">мл.</option>
+            <option value="л.">л.</option>
+            <option value="ч. л.">ч. л.</option>
+            <option value="ст. л.">ст. л.</option>
+            <option value="шт.">шт.</option>
+            <option value="по вкусу">по вкусу</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-primary w-100" type="button" id="add_btn">Добавить</button>
+        </div>
+      </div>
+      
+      <div id="original_recipe" class="mt-3">
+        <h4>Ингредиенты:</h4>
+        <div id="ingredients_list"></div>
+      </div>
+    </div>
+
+    <!-- Изменить рецепт -->
+    <div class="settings-section">
+      <h3 class="h3 mb-3">Изменить рецепт</h3>
+      <div class="row g-2 align-items-end">
+        <div class="col-md-5">
+          <label class="form-label">Действие:</label>
+          <select id="how_many_times_to_change" class="form-select">
+            <option value="decrease">Уменьшить во сколько раз</option>
+            <option value="increase">Увеличить во сколько раз</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Коэффициент:</label>
+          <input id="how_many_times" type="number" class="form-control" placeholder="4" value="4" min="0.1" step="0.1">
+        </div>
+        <div class="col-md-3">
+          <button id="calculate_btn" class="btn btn-success w-100">Вычислить</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Измененный рецепт -->
+    <div class="settings-section">
+      <h3 id="recipe_name" class="recipe-title mb-3">Нажмите, чтобы ввести название рецепта</h3>
+      <div id="modified_recipe_body"></div>
+      
+      <div class="action-buttons d-flex gap-2">
+        <button id="copy_btn" class="btn btn-outline-primary">
+          <i class="bi bi-clipboard"></i> Копировать
+        </button>
+        <button id="screenshot_btn" class="btn btn-outline-secondary">
+          <i class="bi bi-camera"></i> Скриншот
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script>
+    // Основные переменные
+    let ingredients = [];
+    let fontSize = 1; // 1 = normal, 0.875 = small, 1.25 = large
+    let isDarkMode = false;
+
+    // Элементы DOM
+    const itemNameInput = document.getElementById('item_name');
+    const itemCountInput = document.getElementById('item_count');
+    const itemUnitSelect = document.getElementById('item_unit');
+    const addButton = document.getElementById('add_btn');
+    const ingredientsList = document.getElementById('ingredients_list');
+    const howManyTimesToChange = document.getElementById('how_many_times_to_change');
+    const howManyTimesInput = document.getElementById('how_many_times');
+    const calculateButton = document.getElementById('calculate_btn');
+    const recipeName = document.getElementById('recipe_name');
+    const modifiedRecipeBody = document.getElementById('modified_recipe_body');
+    const copyButton = document.getElementById('copy_btn');
+    const screenshotButton = document.getElementById('screenshot_btn');
+    const decreaseFsBtn = document.getElementById('decrease_fs_btn');
+    const increaseFsBtn = document.getElementById('increase_fs_btn');
+    const changeThemeBtn = document.getElementById('change_theme_btn');
+
+    // Функции
+    function addIngredient() {
+      const name = itemNameInput.value.trim();
+      const count = parseFloat(itemCountInput.value);
+      const unit = itemUnitSelect.value;
+      
+      if (!name) {
+        alert('Пожалуйста, введите название ингредиента');
+        return;
+      }
+      
+      // Если количество не указано или равно 0, устанавливаем "по вкусу"
+      const finalUnit = (isNaN(count) || count === 0) ? 'по вкусу' : unit;
+      const finalCount = (finalUnit === 'по вкусу') ? '' : count;
+      
+      ingredients.push({
+        name,
+        count: finalCount,
+        unit: finalUnit
+      });
+      
+      renderIngredients();
+      
+      // Очистка полей ввода
+      itemNameInput.value = '';
+      itemCountInput.value = '';
+      itemUnitSelect.value = 'г.';
+      itemNameInput.focus();
+    }
+
+    function renderIngredients() {
+      ingredientsList.innerHTML = '';
+      
+      if (ingredients.length === 0) {
+        ingredientsList.innerHTML = '<p class="text-muted">Ингредиенты не добавлены</p>';
+        return;
+      }
+      
+      ingredients.forEach((ingredient, index) => {
+        const ingredientElement = document.createElement('div');
+        ingredientElement.className = 'ingredient-item';
+        
+        const ingredientText = document.createElement('span');
+        ingredientText.textContent = `${ingredient.name} - ${ingredient.count} ${ingredient.unit}`;
+        
+        const deleteButton = document.createElement('span');
+        deleteButton.className = 'delete-btn';
+        deleteButton.innerHTML = '<i class="bi bi-trash"></i>';
+        deleteButton.onclick = () => deleteIngredient(index);
+        
+        ingredientElement.appendChild(ingredientText);
+        ingredientElement.appendChild(deleteButton);
+        ingredientsList.appendChild(ingredientElement);
+      });
+    }
+
+    function deleteIngredient(index) {
+      ingredients.splice(index, 1);
+      renderIngredients();
+    }
+
+    function calculateRecipe() {
+      if (ingredients.length === 0) {
+        alert('Пожалуйста, добавьте ингредиенты');
+        return;
+      }
+      
+      const factor = parseFloat(howManyTimesInput.value);
+      if (isNaN(factor) || factor <= 0) {
+        alert('Пожалуйста, введите корректный коэффициент');
+        return;
+      }
+      
+      const isIncrease = howManyTimesToChange.value === 'increase';
+      const calculatedFactor = isIncrease ? factor : 1/factor;
+      
+      modifiedRecipeBody.innerHTML = '<h4>Ингредиенты:</h4>';
+      
+      ingredients.forEach(ingredient => {
+        const ingredientElement = document.createElement('div');
+        ingredientElement.className = 'ingredient-item';
+        
+        if (ingredient.unit === 'по вкусу') {
+          ingredientElement.textContent = `${ingredient.name} - по вкусу`;
+        } else {
+          const newCount = ingredient.count * calculatedFactor;
+          ingredientElement.textContent = `${ingredient.name} - ${newCount.toFixed(2)} ${ingredient.unit}`;
+        }
+        
+        modifiedRecipeBody.appendChild(ingredientElement);
+      });
+    }
+
+    function copyToClipboard() {
+      if (modifiedRecipeBody.innerHTML === '') {
+        alert('Сначала вычислите новый рецепт');
+        return;
+      }
+      
+      const recipeText = `${recipeName.textContent}\n\n${modifiedRecipeBody.textContent}`;
+      
+      navigator.clipboard.writeText(recipeText)
+        .then(() => {
+          alert('Рецепт скопирован в буфер обмена');
+        })
+        .catch(err => {
+          console.error('Ошибка копирования: ', err);
+          alert('Не удалось скопировать рецепт');
+        });
+    }
+
+    function takeScreenshot() {
+      if (modifiedRecipeBody.innerHTML === '') {
+        alert('Сначала вычислите новый рецепт');
+        return;
+      }
+      
+      const recipeSection = document.querySelector('.settings-section:last-child');
+      
+      html2canvas(recipeSection).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'рецепт.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    }
+
+    function changeFontSize(direction) {
+      if (direction === 'decrease' && fontSize > 0.875) {
+        fontSize = 0.875;
+        document.body.className = 'fs-small';
+      } else if (direction === 'increase' && fontSize < 1.25) {
+        fontSize = 1.25;
+        document.body.className = 'fs-large';
+      } else {
+        fontSize = 1;
+        document.body.className = 'fs-normal';
+      }
+    }
+
+    function toggleTheme() {
+      isDarkMode = !isDarkMode;
+      document.body.classList.toggle('dark-mode', isDarkMode);
+      
+      const themeIcon = changeThemeBtn.querySelector('i');
+      if (isDarkMode) {
+        themeIcon.className = 'bi bi-sun';
+        changeThemeBtn.innerHTML = '<i class="bi bi-sun"></i> Тема';
+      } else {
+        themeIcon.className = 'bi bi-moon-stars';
+        changeThemeBtn.innerHTML = '<i class="bi bi-moon-stars"></i> Тема';
+      }
+    }
+
+    // Обработчики событий
+    addButton.addEventListener('click', addIngredient);
+    calculateButton.addEventListener('click', calculateRecipe);
+    copyButton.addEventListener('click', copyToClipboard);
+    screenshotButton.addEventListener('click', takeScreenshot);
+    decreaseFsBtn.addEventListener('click', () => changeFontSize('decrease'));
+    increaseFsBtn.addEventListener('click', () => changeFontSize('increase'));
+    changeThemeBtn.addEventListener('click', toggleTheme);
+
+    // Редактирование названия рецепта
+    recipeName.addEventListener('click', function() {
+      const currentName = this.textContent;
+      const newName = prompt('Введите название рецепта:', currentName);
+      if (newName !== null && newName.trim() !== '') {
+        this.textContent = newName.trim();
+      }
+    });
+
+    // Добавление ингредиента по нажатию Enter
+    itemNameInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        addIngredient();
+      }
+    });
+
+    itemCountInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        addIngredient();
+      }
+    });
+
+    // Инициализация
+    renderIngredients();
+  </script>
+</body>
+</html>
